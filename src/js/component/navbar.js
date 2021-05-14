@@ -1,17 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button, Nav, Navbar } from "react-bootstrap";
 
-export const Navbar = () => {
+export const MainNavbar = () => {
 	return (
-		<nav className="navbar navbar-light bg-light mb-3">
+		<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top">
 			<Link to="/">
-				<span className="navbar-brand mb-0 h1">React Boilerplate</span>
+				<Navbar.Brand href="#home" name="sw-api">
+					Star Wars
+				</Navbar.Brand>
 			</Link>
-			<div className="ml-auto">
-				<Link to="/demo">
-					<button className="btn btn-primary">Check the Context in action</button>
-				</Link>
-			</div>
-		</nav>
+
+			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+			<Navbar.Collapse id="responsive-navbar-nav">
+				<Nav className="mr-auto">
+					<Link to="/character">
+						<Nav.Link name="characters">Characters</Nav.Link>
+					</Link>
+					<Link to="/planets">
+						{" "}
+						<Nav.Link name="planets">Planets</Nav.Link>
+					</Link>
+
+					<Button variant="outline-light" name="myfavs">
+						My Favs
+					</Button>
+				</Nav>
+			</Navbar.Collapse>
+		</Navbar>
 	);
 };

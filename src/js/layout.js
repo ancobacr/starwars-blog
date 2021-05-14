@@ -3,15 +3,36 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./views/home";
-import { Demo } from "./views/demo";
-import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { MainNavbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+
+import { People } from "./component/people";
+import { Planets } from "./component/planets";
 
 //create your first component
 const Layout = () => {
+	const [people, setPeople] = useState([]);
+	const [planets, setPlanets] = useState([]);
+
+	useEffect(() => {
+		async function fetchPeople() {
+			let res = await fetch("https://www.swapi.tech/api/people/");
+			let data = await res.json();
+			setPeople(data.results);
+		}
+
+		async function fetchPlanets() {
+			let res = await fetch("https://www.swapi.tech/api/planets/");
+			let data = await res.json();
+			setPlanets(data.results);
+		}
+
+		fetchPeople();
+		fetchPlanets();
+	}, []);
+
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
 	// you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
 	const basename = process.env.BASENAME || "";
@@ -20,16 +41,16 @@ const Layout = () => {
 		<div className="d-flex flex-column">
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
-					<Navbar />
+					<MainNavbar />
 					<Switch>
 						<Route exact path="/">
 							<Home />
 						</Route>
-						<Route exact path="/demo">
-							<Demo />
+						<Route exact path="/people">
+							<People data={people} />
 						</Route>
-						<Route exact path="/single/:theid">
-							<Single />
+						<Route exact path="/planets">
+							<Planets data={planets} />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>
